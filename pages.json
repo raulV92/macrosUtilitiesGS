@@ -1,0 +1,27 @@
+{
+  "Panini_prods":[
+        "https://www.tiendapanini.com.mx/mexico/producto/Mangas-Ataque-de-los-Titanes-34-110651.aspx",
+        "https://www.tiendapanini.com.mx/mexico/producto/Mangas-Ataque-de-Los-Titanes-29-54531.aspx?oid=160670",
+        "https://www.tiendapanini.com.mx/mexico/producto/Mangas-Bleach-6.aspx"
+                  ],
+
+  "Panini_xPaths":{
+        "titulo":
+        "//div[@class='product-price']/../h1[contains(@class,'product-title')]/text()",
+        "dispo": "//div[@class='addto']/*/text()",
+        "precio": "//div[@class='product-price']/span/text()"
+        },
+
+  "eusica_prods":[
+        "https://eusica.mx/productos/bajos/bajos_electricos/jackson-js-series-concert-bass-minion-js1x-satin-2915556568",
+        "https://eusica.mx/jackson-js-series-monarkh-sc-js22-snow-white-2916912576",
+        "https://eusica.mx/jackson-js-series-monarkh-sc-js22-tobacco-burst-2916901598"
+          ],
+  "eusica_xPaths":{
+        "titulo": "//h1[@class='font-product-title']/text()",
+        "dispo":
+        "//div[@class='form-row']//div[@class='field']/span[@class='stock-row']/span/text()",
+        "precio": "//div[@class='form-row']//span[@class='lbl-price']/text()"
+    }
+
+}

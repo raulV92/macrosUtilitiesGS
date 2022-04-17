@@ -69,9 +69,12 @@ def read_prod_page(products, x_paths):
 
     return all_results
 
-
+'''
 def check_eusica():
 
+    with open('./pages.json', 'r') as json_file:
+        json_data = json.load(json_file)
+    """
     bass_mini = 'https://eusica.mx/jackson-js-series-dinky-minion-js1x-negro-gloss-2912223503?returnurl=%2fsearch%3fq%3djackson%2bminion'
     monarkh = 'https://eusica.mx/jackson-js-series-monarkh-sc-js22-snow-white-2916912576'
     avail_guitar = 'https://eusica.mx/jackson-js-series-monarkh-sc-js22-tobacco-burst-2916901598'
@@ -81,15 +84,20 @@ def check_eusica():
         'dispo':
         "//div[@class='form-row']//div[@class='field']/span[@class='stock-row']/span/text()",
         'precio': "//div[@class='form-row']//span[@class='lbl-price']/text()"
-    }
+    }"""
 
-    products = [bass_mini, monarkh]
+    products = json_data["Panini_prods"]
+    x_paths = json_data["Panini_xPaths"]
 
     return read_prod_page(products, x_paths)
 
 
 def check_panini():
 
+    with open('./pages.json', 'r') as json_file:
+        json_data = json.load(json_file)
+
+    """
     aot_34 = 'https://www.tiendapanini.com.mx/mexico/producto/Mangas-Ataque-de-los-Titanes-34-110651.aspx'
     aot_29 = 'https://www.tiendapanini.com.mx/mexico/producto/Mangas-Ataque-de-Los-Titanes-29-54531.aspx?oid=160670'
     bleach_6 = 'https://www.tiendapanini.com.mx/mexico/producto/Mangas-Bleach-6.aspx'
@@ -99,10 +107,22 @@ def check_panini():
         "//div[@class='product-price']/../h1[contains(@class,'product-title')]/text()",
         'dispo': "//div[@class='addto']/*/text()",
         'precio': "//div[@class='product-price']/span/text()"
-    }
-    products = [aot_34, bleach_6]
+    }"""
+
+    products = json_data["eusica_prods"]
+    x_paths = json_data["eusica_xPaths"]
+
+    return read_prod_page(products, x_paths)'''
+
+def check_page(page_prods:str,page_xPaths:str):
+    with open('./pages.json', 'r') as json_file:
+        json_data = json.load(json_file)
+
+    products = json_data[page_prods]
+    x_paths = json_data[page_xPaths]
 
     return read_prod_page(products, x_paths)
+
 
 
 class notifyBot:
@@ -114,7 +134,7 @@ class notifyBot:
         self.user = 1470416228
 
     def check_prods(self):
-        lineas = check_panini() + check_eusica()
+        lineas = check_page("eusica_prods","eusica_xPaths") + check_page("Panini_prods","Panini_xPaths")
         #breakpoint()
         for result in lineas:
             msj = f"{result['titulo']}\nDispo: {result['dispo']}\nPrecio: {result['precio']}"
@@ -128,7 +148,7 @@ class notifyBot:
     def notify_thread(self):
         self.bot.send_message(self.user,text='thread-init')
         self.check_prods()
-        threading.Timer(900, self.notify_thread  ).start()
+        threading.Timer(90, self.notify_thread  ).start()
 
     def greet_user(update, context):
         context.bot.send_message(chat_id=update.effective_chat.id,
@@ -141,7 +161,7 @@ class notifyBot:
         context.bot.send_message(chat_id=update.effective_chat.id,
                                  text='revisando...')
 
-        lineas = check_panini() + check_eusica()
+        lineas = check_page("eusica_prods","eusica_xPaths") + check_page("Panini_prods","Panini_xPaths")
 
         for result in lineas:
             msj = f"{result['titulo']}\nDispo: {result['dispo']}\nPrecio: {result['precio']}"
@@ -169,7 +189,7 @@ class notifyBot:
 
 def main(bot_name):
 
-    with open('token.json', 'r') as json_file:
+    with open('./../token.json', 'r') as json_file:
         bots = json.load(json_file)
 
     notify_bot = notifyBot(bot_name, bots[bot_name])
